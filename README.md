@@ -16,4 +16,4 @@ To run the scraper, simply run main.py file
 # Change Search query
 To change search query, change the value of location in the code
 
-`location= "***************"`
+`location= "---------------------"`
