@@ -10,3 +10,5 @@ Before running the script, make sure you have the following packages installed:
 
 # Running the script
 To run the scraper, simply run main.py file
+
+'python main.py'
