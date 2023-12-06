@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.expected_conditions import presence_of_element_located
 import time 
 import openpyxl
 from openpyxl import Workbook
@@ -20,13 +19,12 @@ time.sleep(3)
 #Finding the search box 
 #driver.switch_to_default_content()
 searchbox=driver.find_element(By.ID, 'searchboxinput')
-location= "fruit and vegetable shops in Srinagar, Bangalore"
+location= "fruit and vegetable shops in malleshwaram"
 searchbox.send_keys(location)
 searchbox.send_keys(Keys.ENTER)
 time.sleep(5)
 
-entries=driver.find_elements(By.CLASS_NAME, 'bfdHYd')
-
+entries=driver.find_elements(By.CLASS_NAME, 'Nv2PK')
 
 # Scroll down to load more businesses
 while True:
@@ -35,7 +33,7 @@ while True:
     time.sleep(4)  # Give the page some time to load additional content
 
     # Update the entries list with the newly loaded elements
-    new_entries = driver.find_elements(By.CLASS_NAME, 'bfdHYd')
+    new_entries = driver.find_elements(By.CLASS_NAME, 'Nv2PK') 
 
     # Check if no more entries are loaded
     if len(entries) == len(new_entries):
@@ -52,7 +50,7 @@ except:
     wb.save("companies.xlsx")
     sheet = wb.create_sheet("companies")
 
-sheet.append(["query","name","reviews","title","address","phone"])
+sheet.append(["query","name","reviews","title","address","phone","link"])
 
 #Extracting the information from the results  
 for entry in entries:
@@ -62,13 +60,15 @@ for entry in entries:
     title_address = rev_address[1].find_element(By.CLASS_NAME, 'W4Efsd').text.split(' · ')
     title =  title_address[0]
     address = title_address[-1]
+    link = entry.find_element(By.XPATH, './/a').get_attribute('href')
+
     try:
         phone = entry.find_element(By.CLASS_NAME, 'UsdlK').text
     except:
         phone = "no contact number"
     
     try:
-        sheet.append([location,name,reviews,title,address,phone])
+        sheet.append([location,name,reviews,title,address,phone,link])
     except IndexError:
         pass
  
